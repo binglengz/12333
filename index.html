@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			#app{
+				margin: 100px auto;
+				border: 1px solid #000;
+			}
+			th{
+				border: 1px solid saddlebrown;
+			}
+			td{
+				border: 1px solid seagreen;
+			}
+			table{
+				margin: 0px auto;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<table>
+				<tr>
+					<th>id</th>
+					<th>电影名</th>
+					<th>年份</th>
+					<th>分类</th>
+					<th>主演</th>
+					<th>票房</th>
+					<th>去观影</th>
+				</tr>
+				<tbody id="tb"></tbody>
+			</table>
+		</div>
+		<script src="js/jquery191.min.js"></script>
+		<!--<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>-->
+		<script type="text/javascript">
+			$(function (){
+				var db_url = "https://api.douban.com/v2/movie/in_theaters?";
+				var db_data = {"start":0, "count":8, "qq-pf-to": "pcqq.c2c"};
+				$.ajax({
+
+					url:db_url,
+					data:db_data,
+					type:"get",
+					dataType:'jsonp',
+					console.log(db_url);
+					success: function (res){
+//						console.log(db_url);
+						var html = '';
+						for (var i = 0, len=res.subjects.length; i<len; i++) {
+							html += "<tr>";
+							html += "<td>"+res.subjects[i].title+"</td>";
+							html += "<td>"+res.subjects[i].id+"</td>";
+							html += "<td>"+res.subjects[i].year+"</td>";
+							html += "<td>"+res.subjects[i].subtype+"</td>";
+							
+//							html += "<td>"+res.subjects[0].casts[0.name]+"</td>";
+							html += "<td>"+"主演"+"</td>";
+							html += "<td>"+res.subjects[i].collect_count+"</td>";
+							html += "<td>+<a href="+res.subjects[i].alt+">"+"去观影"+"</a></td>";
+							html += "</tr>";
+						}
+						$("#tb").html(html);
+					},
+					error: function () {
+						
+					}
+				});
+			});
+		</script>
+	</body>
+</html>
